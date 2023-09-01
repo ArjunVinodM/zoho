@@ -372,49 +372,7 @@
       });
     });
   </script>
-
-  <script>
-    $(document).ready(function() {
-      var originalTable = $('#dataTable2').clone(); // Clone the original table on page load
-    
-      $('.dropdown-item').on('click', function() {
-        var sortType = $(this).data('sort');
-        if (sortType === 'all') {
-          $('#dataTable2').replaceWith(originalTable.clone());
-        } else if (sortType === 'estimate') {
-          filterByType('Estimate'); // Pass the string value 'Estimate'
-        } else if (sortType === 'saleorder') {
-          filterByType('Sales Order'); // Pass the string value 'Sale Order'
-        } else if (sortType === 'recurringinvoice') {
-          filterByType('Recurring Invoice');
-        } else if (sortType === 'purchaseorder') {
-          filterByType('Purchase Order');
-        } else if (sortType === 'recurringbills') {
-          filterByType('Recurring Bills');
-        } else if (sortType === 'invoice') {
-          filterByType('Invoice');
-        } else if (sortType === 'deliverychellan') {
-          filterByType('Delivery Chellan');
-        } else if (sortType === 'bills') {
-          filterByType('Bills');
-        } else if (sortType === 'expense') {
-          filterByType('Expense');
-        }
-      });
-    
-      function filterByType(type) { // Remove the parameter value from here
-        $('#dataTable2 tbody tr').each(function() {
-          var tdType = $(this).find('td:eq(0)').text();
-          if (tdType === type) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
-      }
-    });
-    
-  </script>  
+ 
 
   <script>
     $(document).ready(function() {
