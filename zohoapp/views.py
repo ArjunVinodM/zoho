@@ -394,11 +394,11 @@ def edit_profile(request,pk):
     
     return render(request,'edit_profile.html',context)
 
-@login_required(login_url='login')
-def itemview(request):
-    company = company_details.objects.get(user = request.user)
-    viewitem=AddItem.objects.all()
-    return render(request,'item_view.html',{'view':viewitem,'company':company})
+# @login_required(login_url='login')
+# def itemview(request):
+#     company = company_details.objects.get(user = request.user)
+#     viewitem=AddItem.objects.all()
+#     return render(request,'item_view.html',{'view':viewitem,'company':company})
 
 
 @login_required(login_url='login')
@@ -6975,7 +6975,7 @@ def commentdb(request, pk):
             "c_data2": c_data2,
             "comments": comments,
         }
-        return redirect("show_credits",pk=pk)
+        return redirect("show_credits", pk=pk)
 
 
  
@@ -8549,7 +8549,7 @@ def show_credits(request, pk):
 
     cdata = Credits_comments_table.objects.filter(vendor=vcredit).order_by('-id')
     # comment = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'cdata':cdata})
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'cdata':cdata} )
     
     
 @login_required(login_url='login')
@@ -9672,6 +9672,7 @@ def sales_summery(request):
 
 def transaction(request, pk):
     product = AddItem.objects.get(id = pk)
+    company = company_details.objects.get(user = request.user)
     
     items=AddItem.objects.all()
     
@@ -9686,7 +9687,7 @@ def transaction(request, pk):
     expense = Expense.objects.filter(goods_label = product.Name)
     
     quantity = int(product.stock)
-    price = int(product.p_price)
+    price = int(product.s_price)
     stock = (quantity * price)
     
     
@@ -9694,6 +9695,7 @@ def transaction(request, pk):
     context = {
         'allproduct': items,
         'product': product,
+        'company_data': company,
         
         'estimate': estimate,
         'sales_order': sales_order,
@@ -9720,7 +9722,7 @@ def detail(request,id):
     print(product.id)
     
     quantity = int(product.stock)
-    price = int(product.p_price)
+    price = int(product.s_price)
     stock = (quantity * price)
     
     
@@ -9728,9 +9730,15 @@ def detail(request,id):
        "allproduct":items,
        "product":product,
        "history":history,
-       'company':  company, 
+       'company_data':  company, 
        "comments":comments,
        'stock': stock,
     }
     
     return render(request,'demo.html',context)
+
+@login_required(login_url='login')
+def itemview(request):
+    company = company_details.objects.get(user = request.user)
+    viewitem=AddItem.objects.all()
+    return render(request,'item_view.html',{'view':viewitem,'company_data':company})

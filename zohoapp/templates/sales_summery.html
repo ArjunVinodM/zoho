@@ -144,10 +144,10 @@
   <div style="overflow-x: auto; overflow-x: hidden;">
     <div class="row pt-2">
       <div class="col-sm-10 col-md-11 col-lg-12">
-        <table class="table" style="width: 100%;">
+        <table class="table" id="myTable" style="width: 100%;">
           <thead>
             <tr>
-              <th></th>
+              <th>SL.no</th>
               <th>Item Name</th>
               <th>Sales Price</th>
               <th>Purchase Price</th>
@@ -159,7 +159,7 @@
           <tbody>
             {% for d in data %}
             <tr>
-              <td>{{ d.id }}</td>
+              <td></td>
               <td>{{ d.Name }}</td>
               <td>{{ d.s_price }}</td>
               <td>{{ d.p_price }}</td>
@@ -173,6 +173,27 @@
     </div>
   </div>
 </div>  
+
+  <script>
+    // Get the table element by its ID
+    var table = document.getElementById("myTable");
+
+    // Get the table body
+    var tbody = table.getElementsByTagName("tbody")[0];
+
+    // Get all rows in the table body
+    var rows = tbody.getElementsByTagName("tr");
+
+    // Iterate through each row and set the serial number
+    for (var i = 0; i < rows.length; i++) {
+        // Get the first existing table cell (td) in the current row
+        var firstCell = rows[i].getElementsByTagName("td")[0];
+
+        // Set the serial number as the row number (plus 1) in the first cell
+        firstCell.textContent = i + 1;
+    }
+  </script>
+
 
   <script>
     $(function() {

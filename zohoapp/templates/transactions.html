@@ -103,7 +103,7 @@
                   <th>Quantity</th>
                 </tr>
               </thead>
-              <tbody id="tableBody">
+              <tbody id="tableBody1">
                 {% for v in allproduct %}
                 <tr>
                   <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.Name }}</a></td>
@@ -140,12 +140,21 @@
                 <tr>
                   <th>Type <i class="fas fa-filter filter-button"></i>
                     <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="filterEstimateButton">Contains</option>
-                        <option value="exact-match">Excat Match</option>
+                      <select class="filter-option" id="type-filter">
+                        <option value="Estimate">Estimate</option>
+                        <option value="Sales Order">Sales Order</option>
+                        <option value="Recurring Invoice">Recurring Invoice</option>
+                        <option value="Purchase Order">Purchase Order</option>
+                        <option value="Recurring Bills">Recurring Bills</option>
+                        <option value="Invoice">Invoice</option>
+                        <option value="DeliveryChellan">DeliveryChellan</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Expense">Expense</option>
                       </select><br>
-                      <button class="apply-filter btn-primary">Apply</button>
+                      
+                      <button class="apply-filter btn-primary" onclick="applyFilter()">Apply</button>
                       <button class="clear-filter btn-primary">Clear</button>
+                      
                     </div><br>
                   </th>
                   
@@ -318,6 +327,25 @@
     </div>
   </div>
 </section>
+
+<script>
+  function applyFilter() {
+    var selectedType = document.getElementById('type-filter').value;
+    var tableRows = document.querySelectorAll("#tableBody tr");
+  
+    tableRows.forEach(function(row) {
+      var typeColumn = row.querySelector("td:first-child").textContent;
+      if (typeColumn.trim() === selectedType) {
+        row.style.display = "table-row";
+      } else {
+        row.style.display = "none";
+      }
+    });
+    // Close the dropdown
+    var filterDropdown = document.querySelector('.filter-dropdown');
+    filterDropdown.style.display = 'none';
+  } 
+</script>
 
 
 
