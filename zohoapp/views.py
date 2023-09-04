@@ -9662,13 +9662,13 @@ def cust_Attach_files(request,id):
 def sales_order(request):
     company = company_details.objects.get(user = request.user)
     data = SalesOrder.objects.all()
-    return render(request, 'sales_order.html', {'data':data, 'company_data': company})
+    return render(request, 'sales_order.html', {'data':data, 'company': company})
 
 def sales_summery(request):
     company = company_details.objects.get(user = request.user)
     data = AddItem.objects.all()
     
-    return render(request, 'sales_summery.html', {'data':data, 'company_data': company})
+    return render(request, 'sales_summery.html', {'data':data, 'company': company})
 
 def transaction(request, pk):
     product = AddItem.objects.get(id = pk)
@@ -9687,7 +9687,7 @@ def transaction(request, pk):
     expense = Expense.objects.filter(goods_label = product.Name)
     
     quantity = int(product.stock)
-    price = int(product.s_price)
+    price = int(product.p_price)
     stock = (quantity * price)
     
     
@@ -9695,7 +9695,7 @@ def transaction(request, pk):
     context = {
         'allproduct': items,
         'product': product,
-        'company_data': company,
+        'company': company,
         
         'estimate': estimate,
         'sales_order': sales_order,
@@ -9722,7 +9722,7 @@ def detail(request,id):
     print(product.id)
     
     quantity = int(product.stock)
-    price = int(product.s_price)
+    price = int(product.p_price)
     stock = (quantity * price)
     
     
@@ -9730,7 +9730,7 @@ def detail(request,id):
        "allproduct":items,
        "product":product,
        "history":history,
-       'company_data':  company, 
+       'company':  company, 
        "comments":comments,
        'stock': stock,
     }
@@ -9741,4 +9741,4 @@ def detail(request,id):
 def itemview(request):
     company = company_details.objects.get(user = request.user)
     viewitem=AddItem.objects.all()
-    return render(request,'item_view.html',{'view':viewitem,'company_data':company})
+    return render(request,'item_view.html',{'view':viewitem,'company':company})

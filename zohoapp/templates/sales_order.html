@@ -130,20 +130,18 @@
 </style>
 
 
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <form class="form-inline">
-      <label class="mr-2" for="fromdate">From:</label> 
-      <input type="date" class="form-control" id="fromdate" style="color: black !important;">
-      <label class="mx-2" for="todate">To:</label>
-      <input type="date" class="form-control" id="todate" style="color: black !important;">
-      <button type="button" class="btn btn-secondary mx-2" onclick="clearFilter()">Clear</button>
-      <button type="button" class="btn btn-primary" onclick="ApplyDateFilter()">Apply</button>
-    </form>
-  </li>
-  
-  <li class="nav-item ml-auto">
-    <div class="dropdown" style="margin-left: 22rem; margin-top: -1.5rem;">
+<div class="container-fluid">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <form class="form-inline">
+        <label class="mr-2" for="fromdate">From:</label>&nbsp;
+        <input type="date" class="form-control" id="fromdate" style="color: black !important;">
+        <label class="mx-2" for="todate">To:</label>
+        <input type="date" class="form-control" id="todate" style="color: black !important;">
+      </form>
+    </li>
+
+    <li class="nav-item dropdown" style="margin-left: 27.5vw; margin-top: -1rem;">
       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="background: white; color: black;">
         <i class="fa fa-file-excel"></i>
       </a>
@@ -151,31 +149,29 @@
         <li><a class="dropdown-item" style="font-size:10px;" onclick="exportAsPDF()">PDF</a></li>
         <li><a class="dropdown-item" style="font-size:10px;" onclick="exportAsXLS()">XLS (Microsoft Excel 1997-2004 Compatible)</a></li>
       </ul>
-    </div>
-  </li> 
+    </li>
 
-  <li class="nav-item">
-    <div class="dropdown" style="margin-top: -1.5rem;">
+    <li class="nav-item dropdown" style="margin-top: -1rem;">
       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="background: white; color: black;">
         <i class="fa fa-print"></i>
       </a>
       <ul class="dropdown-menu">
         <li><a class="printdrop" href="#" onclick="printPageContent()" style="font-size:10px;">Print Preference</a></li>
       </ul>
-    </div>
-  </li>
+    </li>
 
-  <li class="nav-item">
-    <button type="button" onclick="history.go(-1);" class="btn btn-danger">&times;</button>
-  </li>
-</ul>
+    <li class="nav-item">
+      <button type="button" onclick="history.go(-1);" class="btn btn-danger">&times;</button>
+    </li>
+  </ul>
+</div>
 
 <div class="container-fluid" id="container-to-print"> 
   <div class="row pt-5">
     <center>
       <div class="col-md-4">
-        {% if company_data.company_name != None %}
-          <a class="text" style="font-size: 1rem; color: white;">{{ company_data.company_name }}</a><br>
+        {% if company.company_name != None %}
+          <a class="text" style="font-size: 1rem; color: white;">{{ company.company_name }}</a><br>
         {% else %}
           <a class="text" style="font-size: 1rem; color: white;">Add Company</a><br>
         {% endif %}
@@ -318,52 +314,67 @@
 </div>  
 
 
-  <script>
-    function ApplyDateFilter() {
-      var fromDate = new Date(document.getElementById('fromdate').value);
-      var toDate = new Date(document.getElementById('todate').value);
-      
-      // Set the time part to the beginning and end of the day
-      fromDate.setHours(0, 0, 0, 0);
-      toDate.setHours(23, 59, 59, 999);
-      
-      var table = document.getElementById("myTable");
-      var tr = table.getElementsByTagName("tr");
-  
-      for (var i = 1; i < tr.length; i++) {
-          var row = tr[i];
-          var td = row.getElementsByTagName("td")[0]; // Assuming the date is in the first column.
-  
-          if (td) {
-              var txtValue = td.textContent || td.innerText;
-              var check = new Date(txtValue);
-  
-              // Set the time part of check to match the format of fromDate and toDate
-              check.setHours(0, 0, 0, 0);
-  
-              if (check >= fromDate && check <= toDate) {
-                  row.style.display = "";
-              } else {
-                  row.style.display = "none";
-              }
-          }
-      }
-      // Update the selectedEndDate div
-      var start = fromDate;
-      var end = toDate;
-      document.getElementById('selectedEndDate').textContent = 'From ' + start.toDateString() + ' to ' + end.toDateString();
-  }
-      function clearFilter() {
-        document.getElementById("fromdate").value = "";
-        document.getElementById("todate").value = "";
-        var table = document.getElementById("myTable");
-        var tr = table.getElementsByTagName("tr");
+<script>
+  function ApplyDateFilter() {
+    var fromDate = new Date(document.getElementById('fromdate').value);
+    var toDate = new Date(document.getElementById('todate').value);
 
-        for (var i = 1; i < tr.length; i++) {
-            tr[i].style.display = "";
+    // Set the time part to the beginning and end of the day
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(23, 59, 59, 999);
+
+    var table = document.getElementById("myTable");
+    var tr = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tr.length; i++) {
+      var row = tr[i];
+      var td = row.getElementsByTagName("td")[0]; // Assuming the date is in the first column.
+
+      if (td) {
+        var txtValue = td.textContent || td.innerText;
+        var check = new Date(txtValue);
+
+        // Set the time part of check to match the format of fromDate and toDate
+        check.setHours(0, 0, 0, 0);
+
+        if (check >= fromDate && check <= toDate) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
         }
+      }
     }
-  </script>
+    // Update the selectedEndDate div
+    var start = fromDate;
+    var end = toDate;
+    document.getElementById('selectedEndDate').textContent = 'From ' + start.toDateString() + ' to ' + end.toDateString();
+  }
+
+  // Add event listeners to the date inputs to trigger ApplyDateFilter on change
+  document.getElementById('fromdate').addEventListener('change', ApplyDateFilter);
+  document.getElementById('todate').addEventListener('change', ApplyDateFilter);
+
+  // Initialize the filter when the page loads (optional)
+  ApplyDateFilter();
+
+  // Function to show full table when no dates are selected
+  function ShowFullTable() {
+    var table = document.getElementById("myTable");
+    var tr = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tr.length; i++) {
+      tr[i].style.display = "";
+    }
+
+    // Reset the selectedEndDate div
+    document.getElementById('selectedEndDate').textContent = '';
+  }
+
+  // Call the function to show full table initially
+  ShowFullTable();
+</script>
+
+
 
 
 
